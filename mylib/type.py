@@ -122,6 +122,9 @@ class InputData:
     payloads: list[Payload] = []
     constraints: list[Constraint] = []
 
+    def __init__(self) -> None:
+        self.points, self.planes, self.units, self.materials, self.payloads, self.constraints = [], [], [], [], [], []
+
     def __str__(self) -> str:
         return f"<\npoints:{self.points},\nplanes:{self.planes},\nunits:{self.units},\nmaterials:{self.materials},\npayloads:{self.payloads},\nconstraints:{self.constraints}\n>"
 

@@ -1,7 +1,7 @@
 import numpy as np
-import matplotlib.pyplot as plt
+import os
 
-def create_grid(l, h, n_l, n_h, force, path):
+def create_grid(l: list[float], h: list[float], n_l: int, n_h: int, force: float, name: str):
     # 生成x轴和y轴的坐标点
     x = np.linspace(0, l, n_l)
     y = np.linspace(0, h, n_h)
@@ -18,8 +18,8 @@ def create_grid(l, h, n_l, n_h, force, path):
 
     # 生成单元列表
     units = []
-    for i in range(n_l - 1):  # x方向索引（0到3）
-        for j in range(n_h - 1):  # y方向索引（0到9）
+    for i in range(n_l - 1):  # x方向索引
+        for j in range(n_h - 1):  # y方向索引
             # 计算四个顶点编号
             A = i * n_h + j + 1
             B = A + 1
@@ -48,9 +48,13 @@ def create_grid(l, h, n_l, n_h, force, path):
     end = f"1#荷载信息 ：节点号，x方向力，y方向力\n{n_h},{force},0\n3#位移约束信息：节点号，约束方向，约束值\n1,1,0;\n1,2,0\n{(n_l-1)*n_h+1},2,0;"
     txt = start + points + mid + u + end
 
+    os.makedirs("./input", exist_ok=True)
+    path = f"./input/{name}"
     with open(path, "w", encoding="utf8") as file:
         file.write(txt)
-    print(txt)
+    print(path)
+    
+    return None
 
 if __name__ == "__main__":
     l = [0.4, 0.8, 1.6, 3.2]
@@ -58,6 +62,6 @@ if __name__ == "__main__":
     h = 4
     n_h = 40 + 1
     force = 1e6
-    path = ['./input/1_1.txt', './input/2_1.txt','./input/3_1.txt','./input/4_1.txt']
+    name = '1_1.txt'
     for i in range(len(l)):
-        create_grid(l[i], h, n_l[i], n_h, force, path[i])
+        create_grid(l[i], h, n_l[i], n_h, force, name)

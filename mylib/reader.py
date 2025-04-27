@@ -9,6 +9,7 @@ def readLine(line: str) -> str:
 
 def readFile(filePath: str) -> type.InputData:
     fileData = []
+    pic_path = filePath.replace(".txt", ".png")
     try:
         with open(filePath, mode='r', encoding='utf8') as file:
             for i in file:
@@ -21,10 +22,10 @@ def readFile(filePath: str) -> type.InputData:
                 fileData.append(tmp)
     except Exception as e:
         print(e, '\n文件读取失败，请检查文件路径')
-    return parseData(fileData)
+    return parseData(fileData, pic_path)
 
 
-def parseData(src: list[list[float]]) -> type.InputData:
+def parseData(src: list[list[float]], pic_path: str) -> type.InputData:
     data = type.InputData()
     try:
         # 节点数目和节点坐标：编号  x坐标  y坐标
@@ -70,7 +71,8 @@ def parseData(src: list[list[float]]) -> type.InputData:
     except Exception as e:
         Exception(e, '\n输入的文件格式不正确，数据文件出错')
 
-    draw.d(data)
+    draw.d(data, pic_path)
+
 
     return data
 

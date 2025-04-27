@@ -2,7 +2,7 @@ from . import type
 import matplotlib.pyplot as plt
 import numpy as np
 
-def d(data):
+def d(data, path):
     fig, ax = plt.subplots(figsize=(8, 10), tight_layout = True)
     ax.set_aspect('equal')
     
@@ -22,4 +22,6 @@ def d(data):
     x_m = max(x) + 0.2
     ax.set_xlim(-0.2,x_m)
     ax.set_ylim(-0.2,4.2)
-    plt.show()
+    # plt.show()
+    fig.savefig(path)
+    # plt.close()

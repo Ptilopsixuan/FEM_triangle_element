@@ -2,7 +2,8 @@ from . import type, draw
 
 def writeFile(path: str, output: type.OutputData):
 
-    draw.d(output)
+    pic_path = path.replace(".txt", ".png")
+    draw.d(output, pic_path)
     
     try:
         with open(path, "w", encoding="utf8") as file:
