@@ -8,8 +8,13 @@ def writeFile(path: str, output: type.OutputData):
     try:
         with open(path, "w", encoding="utf8") as file:
             for p in output.points:
-                file.write(
-                    f"ponit: {p.id}:({p.x:0.3f}, {p.y:0.3f}),\t displacement: x->{p.ax:0.3e}, y->{p.ay:0.3e};\n")
+                # if p.id == 41 or p.id == len(output.points):
+                    file.write(
+                        f"ponit: {p.id}:({p.x:0.3f}, {p.y:0.3f}),\t displacement: x->{p.ax:0.3e}, y->{p.ay:0.3e};\n")
+                    # with open("./result.txt", "a", encoding="utf8") as fr:
+                    #     fr.write(f"{p.ax:0.3e}, {p.ay:0.3e}\n")
+
+
 
     except Exception as e:
         print(e, '\n文件输出失败')

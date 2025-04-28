@@ -24,4 +24,4 @@ def d(data, path):
     ax.set_ylim(-0.2,4.2)
     # plt.show()
     fig.savefig(path)
-    # plt.close()
+    plt.close()
