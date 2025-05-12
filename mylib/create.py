@@ -1,7 +1,7 @@
 import numpy as np
 import os
 
-def create_grid(l: list[float], h: list[float], n_l: int, n_h: int, force: float, name: str):
+def create_grid(l: list[float], h: list[float], n_l: int, n_h: int, force: float, name: str, const: list[float]):
     # 生成x轴和y轴的坐标点
     x = np.linspace(0, l, n_l)
     y = np.linspace(0, h, n_h)
@@ -35,8 +35,6 @@ def create_grid(l: list[float], h: list[float], n_l: int, n_h: int, force: float
     for unit_id, nodes in enumerate(units, 1):
         output.append([unit_id] + nodes + [1, 1])
 
-    # 打印前5行验证
-    # print("单元号, 节点1, 节点2, 节点3, 1, 1")
     u = ""
     for row in output[:]:
         u += f"{row[0]:3},{row[1]:3},{row[2]:3},{row[3]:3},{row[4]},{row[5]}\n"
@@ -44,8 +42,17 @@ def create_grid(l: list[float], h: list[float], n_l: int, n_h: int, force: float
 
 
     start = f"{len(coordinates)} #节点数目和节点坐标：编号  x坐标  y坐标\n"
-    mid = f"1 #材料信息 ：弹性模量  泊松比\n1 3e10  0.2\n1 # 截面信息：编号  厚度\n1 0.4\n{len(output)} #单元信息：单元编号 i点 j点 m点 材料号  截面号\n"
-    end = f"1#荷载信息 ：节点号，x方向力，y方向力\n{n_h},{force},0\n3#位移约束信息：节点号，约束方向，约束值\n1,1,0;\n1,2,0\n{(n_l-1)*n_h+1},2,0;"
+    mid = f"1 #材料信息 ：弹性模量  泊松比\n\
+            1 {const[0]}  {const[1]}\n\
+            1 # 截面信息：编号  厚度\n\
+            1 {const[2]}\n\
+            {len(output)} #单元信息：单元编号 i点 j点 m点 材料号  截面号\n"
+    end = f"1#荷载信息 ：节点号，x方向力，y方向力\n\
+            {n_h},{force},0\n\
+            3#位移约束信息：节点号，约束方向，约束值\n\
+            1,1,0;\n\
+            1,2,0\n\
+            {(n_l-1)*n_h+1},2,0;"
     txt = start + points + mid + u + end
 
     os.makedirs("./input", exist_ok=True)
@@ -57,11 +64,12 @@ def create_grid(l: list[float], h: list[float], n_l: int, n_h: int, force: float
     return None
 
 if __name__ == "__main__":
-    l = [0.4, 0.8, 1.6, 3.2]
-    n_l = [4 + 1, 8 + 1, 16 + 1, 32 + 1]
+    l = [0.4]
+    n_l = [4 + 1]
     h = 4
     n_h = 40 + 1
     force = 1e6
     name = '1_1.txt'
+    const = [3e10, 0.2, 0.4]
     for i in range(len(l)):
-        create_grid(l[i], h, n_l[i], n_h, force, name)
+        create_grid(l[i], h, n_l[i], n_h, force, name, const)

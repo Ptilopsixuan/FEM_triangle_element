@@ -21,7 +21,7 @@ def d(data, path):
     )
     x_m = max(x) + 0.2
     ax.set_xlim(-0.2,x_m)
-    ax.set_ylim(-0.2,4.2)
+    ax.set_ylim(-0.2,3.2)
     # plt.show()
     fig.savefig(path)
     plt.close()

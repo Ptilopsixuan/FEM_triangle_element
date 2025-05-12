@@ -2,22 +2,23 @@ import numpy as np
 import os
 from mylib import type, operator, reader, writer, create
 
-l = [0.4, 0.8, 1.2, 1.6, 2.0, 2.4, 2.8, 3.2, 3.6, 4.0, 4.4, 4.8, 5.2, 5.6, 6.0, 6.4, 6.8, 7.2, 7.6, 8.0]
+'''平面应力'''
+l = [2]
 n_l = []
 for i in range(len(l)):
-    n_l.append(int(l[i] / 0.1) + 1)
-h = 4
-n_h = 40 + 1
-force = 1e7
+    n_l.append(int(l[i] / 0.5) + 1)
+h = 3
+n_h = (int)(3 / 0.5 + 1)
+force = 1e8
+const = [3e10, 0.2, 0.24]    # E, v, t 
 
-# name = ['1.txt', '2.txt','3.txt','4.txt']
 name = []
 
 for i in range(len(l)):
 
     name.append(f'{i+1}.txt')
 
-    create.create_grid(l[i], h, n_l[i], n_h, force, name[i])
+    create.create_grid(l[i], h, n_l[i], n_h, force, name[i], const)
     file = name[i]
     # 读取文件
     data = reader.readFile('.\\input\\' + file)
