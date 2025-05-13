@@ -27,8 +27,8 @@ def create_grid(l: list[float], h: list[float], n_l: int, n_h: int, force: float
             D = C + 1
             
             # 创建两个三角形单元（逆时针顺序）
-            units.append([A, D, B])  # 三角形1
-            units.append([C, D, A])   # 三角形2
+            units.append([A, C, B])  # 三角形1
+            units.append([D, B, C])   # 三角形2
 
     # 生成带编号的输出
     output = []
@@ -43,16 +43,16 @@ def create_grid(l: list[float], h: list[float], n_l: int, n_h: int, force: float
 
     start = f"{len(coordinates)} #节点数目和节点坐标：编号  x坐标  y坐标\n"
     mid = f"1 #材料信息 ：弹性模量  泊松比\n\
-            1 {const[0]}  {const[1]}\n\
-            1 # 截面信息：编号  厚度\n\
-            1 {const[2]}\n\
-            {len(output)} #单元信息：单元编号 i点 j点 m点 材料号  截面号\n"
+1 {const[0]}  {const[1]}\n\
+1 # 截面信息：编号  厚度\n\
+1 {const[2]}\n\
+{len(output)} #单元信息：单元编号 i点 j点 m点 材料号  截面号\n"
     end = f"1#荷载信息 ：节点号，x方向力，y方向力\n\
-            {n_h},{force},0\n\
-            3#位移约束信息：节点号，约束方向，约束值\n\
-            1,1,0;\n\
-            1,2,0\n\
-            {(n_l-1)*n_h+1},2,0;"
+{n_h},{force},0\n\
+3#位移约束信息：节点号，约束方向，约束值\n\
+1,1,0;\n\
+1,2,0\n\
+{(n_l-1)*n_h+1},2,0;"
     txt = start + points + mid + u + end
 
     os.makedirs("./input", exist_ok=True)
