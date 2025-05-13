@@ -67,7 +67,7 @@ def integrateX(constraint: list[type.Constraint], K, P):
     '''
     采用对角元素大数法引入位移边界条件
     '''
-    max = np.max(K)*10e10
+    max = np.max(K)*6e23
     for cst in constraint:
         if (cst.value != 0):
             continue
@@ -96,11 +96,61 @@ def calculateA(mid: type.MidData) -> np.ndarray:
     mid.a = [np.round(x, 12) for x in tmp]
     return mid.a
 
+# 计算应变
+def calculateStrain(unit: type.Unit):
+    x = (unit.i.x, unit.j.x, unit.m.x)
+    y = (unit.i.y, unit.j.y, unit.m.y)
+
+    # 请在这里完成单元刚度矩阵的编制
+    B = np.zeros((3, 6))
+    # 代码完善如下：
+    a = [x[1]*y[2]-x[2]*y[1], x[2]*y[0]-x[0]*y[2], x[0]*y[1]-x[1]*y[0]]
+    b = [y[1]-y[2], y[2]-y[0], y[0]-y[1]]
+    c = [-x[1]+x[2], -x[2]+x[0], -x[0]+x[1]]
+
+    A = (a[0]+a[1]+a[2])/2
+
+    for i in range(0, 3):
+        B[0][2*i] = b[i] / 2 / A
+        B[1][2*i+1] = c[i] / 2 / A
+        B[2][2*i] = c[i] / 2 / A
+        B[2][2*i+1] = b[i] / 2 / A 
+
+    ae = [unit.i.ax, unit.i.ay, unit.j.ax, unit.j.ay, unit.m.ax, unit.m.ay]
+    unit.e = np.matmul(B, ae).tolist()
+
+    return True
+
+# 计算应力
+def calculateStress(unit: type.Unit):
+    E = unit.material.E
+    v = unit.material.v
+
+    # 请在这里完成单元刚度矩阵的编制
+    D = np.zeros((3, 3))
+    # 代码完善如下：
+    D[0][0] = 1
+    D[0][1] = v 
+    D[1][0] = v 
+    D[1][1] = 1
+    D[2][2] = (1-v) / 2 
+
+    D = D * E / (1 - v * v)
+
+    unit.s = np.matmul(D, unit.e).tolist()
+
+    return True
 
 # 生成输出数据
 def gennerate(data: type.MidData):
     points = data.data.points
     for i in range(0, len(points)):
         points[i].ax, points[i].ay = data.a[i*2], data.a[i*2+1]
+    
+    for unit in data.data.units:
+        # 计算应变
+        calculateStrain(unit)
+        # 计算应力
+        calculateStress(unit)
 
-    return type.OutputData(points)
+    return type.OutputData(points, data.data.units)

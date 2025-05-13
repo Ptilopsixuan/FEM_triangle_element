@@ -20,8 +20,9 @@ def d(data, path):
     marker='o'          # 点形状
     )
     x_m = max(x) + 0.2
+    y_m = max(y) + 0.2
     ax.set_xlim(-0.2,x_m)
-    ax.set_ylim(-0.2,3.2)
+    ax.set_ylim(-0.2,y_m)
     # plt.show()
     fig.savefig(path)
     plt.close()

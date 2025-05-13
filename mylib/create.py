@@ -27,8 +27,8 @@ def create_grid(l: list[float], h: list[float], n_l: int, n_h: int, force: float
             D = C + 1
             
             # 创建两个三角形单元（逆时针顺序）
-            units.append([A, C, B])  # 三角形1
-            units.append([C, D, B])   # 三角形2
+            units.append([A, D, B])  # 三角形1
+            units.append([C, D, A])   # 三角形2
 
     # 生成带编号的输出
     output = []

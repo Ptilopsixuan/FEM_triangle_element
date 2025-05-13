@@ -3,14 +3,14 @@ import os
 from mylib import type, operator, reader, writer, create
 
 '''平面应力'''
-l = [2]
+l = [0.5]
 n_l = []
 for i in range(len(l)):
     n_l.append(int(l[i] / 0.5) + 1)
 h = 3
-n_h = (int)(3 / 0.5 + 1)
-force = 1e8
-const = [3e10, 0.2, 0.24]    # E, v, t 
+n_h = (int)(h / 0.5 + 1)
+force = 1e4
+const = [200e9, 0.3, 0.24]    # E, v, t 
 
 name = []
 
@@ -41,6 +41,14 @@ for i in range(len(l)):
     # 引入位移边界条件和解方程
     operator.integrateX(data.constraints, middata.K, middata.P)
     operator.calculateA(middata)
+
+
+    for unit in data.units:
+        # 计算单元应变
+        operator.calculateStrain(unit)
+        # 计算单元应力
+        operator.calculateStress(unit)
+    
 
     # 写入文件
     output = operator.gennerate(middata)

@@ -59,6 +59,8 @@ class Unit: # 单元
     m: Point = None
     material: Material = None
     plane: Plane = None
+    e: list[float] = [] # 应变
+    s: list[float] = [] # 应力
 
     # 单元刚度矩阵
     Ke = None
@@ -150,5 +152,6 @@ class MidData:
 class OutputData:
     points = []
 
-    def __init__(self, points:list[Point]) -> None:
+    def __init__(self, points:list[Point], units:list[Unit]) -> None:
         self.points = points
+        self.units = units
